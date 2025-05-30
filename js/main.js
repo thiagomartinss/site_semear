@@ -403,6 +403,29 @@ function compra(){
     else
         return false;
 }
+/* */
+function verificarCamposPreenchidos(form) {
+    let valido = true;
+
+    // Seleciona todos inputs e selects obrigatórios dentro do form
+    const camposObrigatorios = form.querySelectorAll('input[required], select[required], textarea[required]');
+
+    // Remove erros antigos
+    camposObrigatorios.forEach(campo => campo.classList.remove('is-invalid'));
+
+    // Verifica cada campo
+    camposObrigatorios.forEach(campo => {
+        const valor = campo.value.trim();
+        if (valor === '') {
+            campo.classList.add('is-invalid'); // destaca o campo com erro
+            valido = false;
+        }
+    });
+
+    return valido;
+}
+/* */
+
 
 /* tabela dinamica*/
 var vetClientes = [
@@ -436,6 +459,11 @@ function montarTabela(dados){
 
 function adicionarItem(event){
     event.preventDefault();
+    const form = document.getElementById('meu');
+    if (!verificarCamposPreenchidos(form)) {
+        alert('Por favor, preencha todos os campos obrigatórios.');
+        return; 
+    }else{
     let nome = document.querySelector('#meu #nome');
     let ultimoNome = document.querySelector('#meu #ultimoNome');
     let cpf = document.querySelector('#meu #cpf');
@@ -495,7 +523,7 @@ function adicionarItem(event){
     
     alert('Cadastro realizado com sucesso!');
     nomeInput.focus();
-    
+}
 }
 
 function excluirItem(idDelete){
